@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authorization Callback — Code Inspiration</title>
+<style>
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,monospace,Arial,sans-serif;
+         background:#0f1419; color:#e8edf4; line-height:1.6; }
+  .wrap { max-width:680px; margin:0 auto; padding:56px 24px; }
+  h1 { font-size:1.5rem; }
+  .box { background:#1a2230; border:1px solid #283246; border-radius:12px;
+         padding:18px; margin:18px 0; word-break:break-all; }
+  .label { color:#3ec6c0; font-weight:600; font-size:.85rem; text-transform:uppercase; letter-spacing:.5px; }
+  .val { font-family:ui-monospace,Menlo,Consolas,monospace; margin-top:6px; }
+  button { background:#3ec6c0; color:#0f1419; border:0; border-radius:8px;
+           padding:8px 16px; font-weight:700; cursor:pointer; margin-top:10px; }
+  .muted { color:#9aa7b8; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Authorization Callback</h1>
+  <p class="muted">Halaman ini menerima kode otorisasi dari TikTok. Salin nilai
+  <strong>code</strong> di bawah dan tempel ke alat OAuth Anda untuk ditukar menjadi access token.</p>
+
+  <div class="box">
+    <div class="label">code</div>
+    <div class="val" id="code">—</div>
+    <button onclick="copyCode()">Salin code</button>
+  </div>
+
+  <div class="box">
+    <div class="label">state</div>
+    <div class="val" id="state">—</div>
+  </div>
+
+  <div class="box" id="errBox" style="display:none;border-color:#a33;">
+    <div class="label" style="color:#ff7a7a;">error</div>
+    <div class="val" id="err">—</div>
+  </div>
+
+<script>
+  const p = new URLSearchParams(window.location.search);
+  const code = p.get("code"), state = p.get("state"), error = p.get("error");
+  document.getElementById("code").textContent = code || "(tidak ada)";
+  document.getElementById("state").textContent = state || "(tidak ada)";
+  if (error) {
+    document.getElementById("errBox").style.display = "block";
+    document.getElementById("err").textContent = error + " — " + (p.get("error_description") || "");
+  }
+  function copyCode() {
+    if (code) navigator.clipboard.writeText(code).then(() => alert("code disalin"));
+  }
+</script>
+</div>
+</body>
+</html>

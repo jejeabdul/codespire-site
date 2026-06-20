@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Inspiration</title>
+<style>
+  :root { --bg:#0f1419; --card:#1a2230; --ink:#e8edf4; --muted:#9aa7b8; --accent:#3ec6c0; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         background:var(--bg); color:var(--ink); line-height:1.6; }
+  .wrap { max-width:760px; margin:0 auto; padding:64px 24px; }
+  h1 { font-size:2.4rem; margin:0 0 8px; letter-spacing:-0.5px; }
+  .tag { color:var(--accent); font-weight:600; margin-bottom:32px; }
+  p { color:var(--muted); }
+  .card { background:var(--card); border:1px solid #283246; border-radius:14px;
+          padding:28px; margin:24px 0; }
+  a { color:var(--accent); }
+  .links a { display:inline-block; margin-right:20px; font-weight:600; }
+  footer { color:var(--muted); font-size:.85rem; margin-top:40px; border-top:1px solid #283246; padding-top:20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Code Inspiration</h1>
+  <div class="tag">Code + Inspire</div>
+
+  <p>Code Inspiration adalah tool untuk membuat dan menyiapkan konten edukasi
+  pemrograman berformat video pendek, lalu mengunggahnya sebagai draft ke akun
+  TikTok pemilik untuk ditinjau dan dipublikasikan secara manual.</p>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Cara kerja</h2>
+    <p>Aplikasi membuat aset video edukasi, lalu menggunakan TikTok Login Kit
+    dan Content Posting API (scope <code>video.upload</code>) untuk mengirim video
+    sebagai draft ke kotak masuk (inbox) akun TikTok yang telah memberi otorisasi.
+    Publikasi akhir selalu dilakukan secara manual oleh pemilik akun di dalam aplikasi TikTok.</p>
+  </div>
+
+  <div class="links">
+    <a href="./terms.html">Terms of Service</a>
+    <a href="./privacy.html">Privacy Policy</a>
+  </div>
+
+  <footer>
+    Kontak: <a href="mailto:codespire77@gmail.com">codespire77@gmail.com</a><br>
+    &copy; 2026 Code Inspiration.
+  </footer>
+</div>
+</body>
+</html>
