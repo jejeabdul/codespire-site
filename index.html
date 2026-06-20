@@ -18,6 +18,13 @@
   a { color:var(--accent); }
   .links a { display:inline-block; margin-right:20px; font-weight:600; }
   footer { color:var(--muted); font-size:.85rem; margin-top:40px; border-top:1px solid #283246; padding-top:20px; }
+  .scopes { display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 20px; }
+  .chip { font-size:.8rem; padding:5px 12px; border-radius:999px; border:1px solid var(--accent); color:var(--accent); }
+  .ttbtn { display:inline-flex; align-items:center; gap:10px; cursor:pointer; border:0;
+           border-radius:10px; padding:14px 22px; font-size:1rem; font-weight:700;
+           color:#0f1419; background:#fff; }
+  .ttbtn:active { transform:translateY(1px); }
+  code { background:#0d1426; padding:2px 6px; border-radius:6px; }
 </style>
 </head>
 <body>
@@ -37,6 +44,24 @@
     Publikasi akhir selalu dilakukan secara manual oleh pemilik akun di dalam aplikasi TikTok.</p>
   </div>
 
+  <div class="card">
+    <h2 style="margin-top:0;">Hubungkan akun TikTok</h2>
+    <p>Beri otorisasi agar Code Inspiration dapat mengirim video sebagai draft ke
+    Inbox TikTok kamu. Izin yang diminta:</p>
+    <div class="scopes">
+      <span class="chip">user.info.basic</span>
+      <span class="chip">video.upload</span>
+    </div>
+    <button id="ttLogin" class="ttbtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M16.5 3c.4 2.3 1.9 4 4.1 4.3v2.6c-1.5.1-2.9-.4-4.1-1.2v6.1c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6c.3 0 .6 0 .9.1v2.7c-.3-.1-.6-.2-.9-.2-1.8 0-3.3 1.5-3.3 3.3S8.7 18 10.5 18s3.3-1.5 3.3-3.3V3h2.7z"/>
+      </svg>
+      Login with TikTok
+    </button>
+    <p class="muted" style="margin-top:14px;">Setelah login & memberi izin, kamu diarahkan
+    kembali ke <code>callback.html</code>. Publikasi akhir selalu kamu lakukan manual di app TikTok.</p>
+  </div>
+
   <div class="links">
     <a href="./terms.html">Terms of Service</a>
     <a href="./privacy.html">Privacy Policy</a>
@@ -47,5 +72,37 @@
     &copy; 2026 Code Inspiration.
   </footer>
 </div>
+
+<script>
+  // Client Key bersifat PUBLIK (bukan secret). Sandbox utk app review.
+  const CLIENT_KEY   = "sbawmqxi155u3qb8te";
+  const REDIRECT_URI = "https://jejeabdul.github.io/codespire-site/callback.html";
+  const SCOPES       = "user.info.basic,video.upload";
+  const AUTH_URL     = "https://www.tiktok.com/v2/auth/authorize/";
+
+  function b64url(buf){
+    let s = btoa(String.fromCharCode(...new Uint8Array(buf)));
+    return s.replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  }
+  function randStr(n){
+    const a = new Uint8Array(n); crypto.getRandomValues(a); return b64url(a).slice(0,n);
+  }
+  async function sha256(str){
+    return await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  }
+  document.getElementById('ttLogin').addEventListener('click', async () => {
+    const verifier  = randStr(96);
+    const challenge = b64url(await sha256(verifier));
+    const state     = randStr(16);
+    sessionStorage.setItem('tt_code_verifier', verifier);
+    sessionStorage.setItem('tt_state', state);
+    const q = new URLSearchParams({
+      client_key: CLIENT_KEY, scope: SCOPES, response_type: 'code',
+      redirect_uri: REDIRECT_URI, state: state,
+      code_challenge: challenge, code_challenge_method: 'S256'
+    });
+    window.location.href = AUTH_URL + '?' + q.toString();
+  });
+</script>
 </body>
 </html>
